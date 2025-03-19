@@ -105,8 +105,8 @@ redis-server
 Clona este repositorio en tu máquina local:
 
 ```bash
-git clone <url-del-repositorio>
-cd <nombre-del-repositorio>
+git clone git@github.com:JeferssonCL/EscalabilidadDeSistemas-JeferssonCoronel.git
+cd EscalabilidadDeSistemas-JeferssonCoronel/CachingWithRedis
 ```
 
 #### Paso 3: Instalar Paquete en .NET
