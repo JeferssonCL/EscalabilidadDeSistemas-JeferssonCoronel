@@ -56,8 +56,7 @@ Se utiliza para:
 
 ---
 
-En este laboratorio, implementaremos Redis en una API que expone endpoints para una tabla sencilla llamada `Products` 
-en .NET, con el objetivo de mejorar mejorar el rendimiento mediante el almacenamiento en caché de datos frecuentemente consultados.
+En este laboratorio, hemos creado una solución para manejar productos utilizando un servicio de backend que interactúa con bases de datos PostgreSQL y Redis. Se desarrollaron varias partes del sistema, incluyendo controladores, servicios de caché y servicios de productos, todo bajo el marco de ASP.NET Core. Además, el sistema se optimizó para realizar operaciones de lectura y escritura de datos de manera eficiente, aprovechando la caché en memoria proporcionada por Redis.
 
 
 ### Caso de Uso: Mejora del Rendimiento en una API de Productos
@@ -66,6 +65,41 @@ especifico, la API consulta la base de datos, lo que puede ser **costoso en tér
 Para evitar llamadas repetitivas a la base de datos, usaremos Redis como **caché**. Redis almacenará la lista de productos 
 en memoria y la API la servirá desde el caché si está disponible, en lugar de volver a consultar la base de datos.
 
+#### 1. **Controladores de Producto (ProductsController)**
+
+El **`ProductsController`** proporciona las rutas necesarias para manejar las operaciones CRUD sobre los productos. El controlador define los siguientes métodos:
+
+#### 2. **Servicio de Caché con Redis (RedisCacheService)**
+
+El **`RedisCacheService`** interactúa con **Redis**, proporcionando métodos para almacenar y recuperar productos de la caché. Los métodos importantes incluyen:
+
+- **`SetAsync`**: Guarda un objeto en Redis, serializándolo como un JSON y estableciendo un tiempo de expiración.
+
+- **`GetAsync`**: Recupera un objeto de Redis. Si el objeto no está presente, devuelve `null`.
+
+- **`RemoveAsync`**: Elimina una clave específica de Redis, lo que es útil para mantener la consistencia entre la caché y la base de datos.
+
+#### 3. **Servicios de Producto (ProductService)**
+
+El **`ProductService`** proporciona la lógica de negocio para manejar las operaciones de los productos, interactuando con tanto la base de datos (a través de un repositorio) como la caché (a través de Redis).
+
+#### 4. **Configuración de la Conexión a PostgreSQL y Redis**
+
+El código de configuración en el **`Program.cs`** se encarga de configurar las conexiones a PostgreSQL y Redis:
+
+- **PostgreSQL**: Se conecta a PostgreSQL utilizando las configuraciones proporcionadas desde las variables de entorno. La conexión se establece usando la cadena de conexión definida en la variable de entorno `POSTGRES_SQL_CONNECTION`.
+
+- **Redis**: Se conecta a Redis mediante `localhost:6379`, lo que es ideal para entornos de desarrollo locales.
+
+#### 5. **Flujo de trabajo y optimización de la caché**
+
+La principal optimización en este sistema es el uso de **caché Redis** para almacenar productos y reducir la carga sobre la base de datos. La lógica sigue un patrón en el que:
+
+1. **Primero se intenta obtener los datos de la caché.**
+2. **Si los datos no están en caché**, se consulta la base de datos y los resultados se almacenan en la caché para futuras solicitudes.
+3. En el caso de **actualizaciones o eliminaciones**, las entradas correspondientes en la caché se eliminan para evitar que los usuarios vean datos obsoletos.
+
+Esto asegura que las lecturas de productos sean muy rápidas, utilizando la caché, y que las escrituras (agregados, actualizaciones y eliminaciones) se realicen en la base de datos, manteniendo la coherencia entre los datos de ambas fuentes.
 
 ### Requisitos Previos
 
@@ -211,13 +245,4 @@ Puedes verificar el comportamiento del caché haciendo una secuencia de solicitu
 
 ---
 
-- Redis nos permite **evitar consultas innecesarias a la base de datos**.  
-- La API **responde más rápido** al usar datos en memoria.  
-- El caché se **puede limpiar y actualizar dinámicamente**.
-
-Este enfoque es ideal para **cualquier sistema que maneje datos frecuentemente accedidos**, como:
-
-🔹 APIs de productos  
-🔹 Sistemas de autenticación  
-🔹 Contadores de visitas  
-🔹 Dashboards en tiempo real
+Este laboratorio ha demostrado cómo integrar una arquitectura de caché con Redis en una aplicación backend que interactúa con una base de datos PostgreSQL. La implementación optimiza las operaciones de lectura y escritura, asegurando la consistencia y mejorando el rendimiento del sistema. La arquitectura también proporciona una base escalable que puede manejar un gran volumen de solicitudes de manera eficiente.
