@@ -125,8 +125,8 @@ Antes de comenzar, asegúrate de tener lo siguiente instalado:
 Clona este repositorio en tu máquina local:
 
 ```bash
-git clone <url-del-repositorio>
-cd <nombre-del-repositorio>
+git clone git@github.com:JeferssonCL/EscalabilidadDeSistemas-JeferssonCoronel.git
+cd EscalabilidadDeSistemas-JeferssonCoronel/CQRS_with_SQL-No_SQL
 ```
 
 #### Paso 2: Instalar Paquete en .NET
