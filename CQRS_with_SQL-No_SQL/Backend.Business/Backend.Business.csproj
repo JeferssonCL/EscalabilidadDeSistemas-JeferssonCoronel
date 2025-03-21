@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+<PropertyGroup>
+  <TargetFramework>net8.0</TargetFramework>
+  <ImplicitUsings>enable</ImplicitUsings>
+  <Nullable>enable</Nullable>
+  <RootNamespace>Backend.Business</RootNamespace>
+</PropertyGroup>
+
+<ItemGroup>
+  <PackageReference Include="AutoMapper" Version="13.0.1" />
+  <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+  <PackageReference Include="FluentValidation" Version="11.10.0" />
+  <PackageReference Include="MediatR" Version="12.4.1" />
+  <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
+  <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0-rc.2.24473.5" />
+</ItemGroup>
+
+<ItemGroup>
+  <ProjectReference Include="..\Backend.Data\Backend.Data.csproj" />
+  <ProjectReference Include="..\Backend.Infrastructure\Backend.Infrastructure.csproj" />
+</ItemGroup>
+
+<ItemGroup>
+  <Reference Include="Microsoft.Extensions.Hosting.Abstractions">
+    <HintPath>..\..\..\..\..\.nuget\packages\microsoft.aspnetcore.app.ref\8.0.11\ref\net8.0\Microsoft.Extensions.Hosting.Abstractions.dll</HintPath>
+  </Reference>
+</ItemGroup>
+
+</Project>
